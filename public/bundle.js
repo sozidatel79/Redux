@@ -25872,26 +25872,52 @@
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 	var redux = __webpack_require__(236);
 
 	console.log('Starting redux example');
 
-	var currentState = {
-	    showCompleted: false,
-	    searchText: '',
-	    name: '',
-	    todos: []
+	var stateDefault = {
+	    hobbies: [],
+	    movies: []
 	};
 
+	var nextHobbyId = 1;
+	var nextMovieId = 1;
+	var dispatchId = 0;
+
 	var reducer = function reducer() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : currentState;
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : stateDefault;
 	    var action = arguments[1];
 
 	    switch (action.type) {
-	        case 'CHANGE_NAME':
+	        case 'ADD_HOBBY':
 	            return _extends({}, state, {
-	                searchText: action.searchText,
-	                name: action.name
+	                hobbies: [].concat(_toConsumableArray(state.hobbies), [{
+	                    id: nextHobbyId++,
+	                    hobby: action.hobby
+	                }])
+	            });
+	        case 'ADD_MOVIE':
+	            return _extends({}, state, {
+	                movies: [].concat(_toConsumableArray(state.movies), [{
+	                    id: nextMovieId++,
+	                    title: action.title,
+	                    genre: action.genre
+	                }])
+	            });
+	        case 'REMOVE_HOBBY':
+	            return _extends({}, state, {
+	                hobbies: state.hobbies.filter(function (hobby) {
+	                    return hobby.id != action.id;
+	                })
+	            });
+	        case 'REMOVE_MOVIE':
+	            return _extends({}, state, {
+	                movies: state.movies.filter(function (movie) {
+	                    return movie.id != action.id;
+	                })
 	            });
 	        default:
 	            return state;
@@ -25903,18 +25929,41 @@
 	}));
 
 	store.subscribe(function () {
+	    dispatchId++;
 	    var state = store.getState();
-	    console.log('State is: ', state);
+	    console.log('dispatch # ' + dispatchId, state);
 	});
 
 	store.dispatch({
-	    type: 'CHANGE_NAME',
-	    searchText: 'Feed cat'
+	    type: 'ADD_HOBBY',
+	    hobby: 'Running'
 	});
 
 	store.dispatch({
-	    type: 'CHANGE_NAME',
-	    searchText: 'Walk dog'
+	    type: 'ADD_HOBBY',
+	    hobby: 'Sleep'
+	});
+
+	store.dispatch({
+	    type: 'ADD_MOVIE',
+	    title: 'Demolition man',
+	    genre: 'Action'
+	});
+
+	store.dispatch({
+	    type: 'ADD_MOVIE',
+	    title: 'Bones',
+	    genre: 'Serials'
+	});
+
+	store.dispatch({
+	    type: 'REMOVE_HOBBY',
+	    id: 2
+	});
+
+	store.dispatch({
+	    type: 'REMOVE_MOVIE',
+	    id: 2
 	});
 
 /***/ }),
