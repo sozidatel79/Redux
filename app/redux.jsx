@@ -14,19 +14,29 @@ var reducer = (state = currentState, action) => {
         case  'CHANGE_NAME':
             return{
                 ...state,
-                searchText: action.searchText
+                searchText: action.searchText,
+                name: action.name
             };
         default:
             return state;
     }
 };
 
-var store = redux.createStore(reducer);
-var currentState = store.getState();
+var store = redux.createStore(reducer, redux.compose(
+    window.devToolsExtension ? window.devToolsExtension() : f => f
+));
 
+store.subscribe(() => {
+    var state = store.getState();
+    console.log('State is: ', state);
+});
 
 store.dispatch({
     type: 'CHANGE_NAME',
-    searchText: 'Anton',
+    searchText: 'Feed cat'
 });
-console.log('searchText should be Anton', store.getState());
+
+store.dispatch({
+    type: 'CHANGE_NAME',
+    searchText: 'Walk dog'
+});
