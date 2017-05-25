@@ -13,3 +13,4 @@ ReactDOM.render(
     <h1>Redux</h1>,
     document.querySelector('#app')
 );
+require('./redux');
