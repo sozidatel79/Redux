@@ -2,10 +2,7 @@ var redux = require('redux');
 
 console.log('Starting redux example');
 
-var nextHobbyId = 1;
-var nextMovieId = 1;
-var dispatchId = 0;
-
+/*Name reducer and action generators*/
 var nameReducer = (state = 'Default', action) => {
     switch (action.type){
         case 'CHANGE_NAME':
@@ -14,7 +11,15 @@ var nameReducer = (state = 'Default', action) => {
             return state;
     }
 };
+var ActionChangeName = (name) => {
+    return {
+        type: 'CHANGE_NAME',
+        name
+    }
+};
 
+/*Hobby reducer and action generators*/
+var nextHobbyId = 1;
 var hobbiesReducer = (state = [], action) => {
     switch(action.type){
         case  'ADD_HOBBY':
@@ -31,7 +36,21 @@ var hobbiesReducer = (state = [], action) => {
             return state;
     }
 };
+var ActionAddHobby = (hobby) => {
+    return {
+        type: 'ADD_HOBBY',
+        hobby
+    }
+};
+var ActionRemoveHobby = (id) => {
+  return {
+      type: 'REMOVE_HOBBY',
+      id
+  }
+};
 
+/*Movie reducer and action generators*/
+var nextMovieId = 1;
 var moviesReducer = (state = [], action) => {
     switch (action.type){
         case  'ADD_MOVIE':
@@ -49,6 +68,19 @@ var moviesReducer = (state = [], action) => {
             return state;
     }
 };
+var ActionAddMovie = (title, genre) => {
+    return {
+        type: 'ADD_MOVIE' ,
+        title,
+        genre
+    }
+}
+var ActionRemoveMovie = (id) => {
+    return {
+        type: 'REMOVE_MOVIE',
+        id
+    }
+}
 
 var reducers = redux.combineReducers({
    name: nameReducer,
@@ -60,24 +92,13 @@ var store = redux.createStore(reducers, redux.compose(
     window.devToolsExtension ? window.devToolsExtension() : f => f
 ));
 
+var dispatchId = 0;
 store.subscribe(() => {
     dispatchId++;
     var state = store.getState();
     console.log('dispatch # ' + dispatchId, state);
 });
 
-store.dispatch({
-    type: 'CHANGE_NAME',
-    name: 'Anton'
-});
-
-store.dispatch({
-    type: 'ADD_HOBBY',
-    hobby: 'Sleep'
-});
-
-store.dispatch({
-    type: 'ADD_MOVIE' ,
-    title: 'Demolition man',
-    genre: 'Action',
-});
+store.dispatch(ActionChangeName('Anton'));
+store.dispatch(ActionAddHobby('Sleep'));
+store.dispatch(ActionAddMovie('Demolition man', 'Action'));

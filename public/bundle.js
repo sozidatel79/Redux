@@ -25876,10 +25876,7 @@
 
 	console.log('Starting redux example');
 
-	var nextHobbyId = 1;
-	var nextMovieId = 1;
-	var dispatchId = 0;
-
+	/*Name reducer and action generators*/
 	var nameReducer = function nameReducer() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'Default';
 	    var action = arguments[1];
@@ -25891,7 +25888,15 @@
 	            return state;
 	    }
 	};
+	var ActionChangeName = function ActionChangeName(name) {
+	    return {
+	        type: 'CHANGE_NAME',
+	        name: name
+	    };
+	};
 
+	/*Hobby reducer and action generators*/
+	var nextHobbyId = 1;
 	var hobbiesReducer = function hobbiesReducer() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 	    var action = arguments[1];
@@ -25910,7 +25915,21 @@
 	            return state;
 	    }
 	};
+	var ActionAddHobby = function ActionAddHobby(hobby) {
+	    return {
+	        type: 'ADD_HOBBY',
+	        hobby: hobby
+	    };
+	};
+	var ActionRemoveHobby = function ActionRemoveHobby(id) {
+	    return {
+	        type: 'REMOVE_HOBBY',
+	        id: id
+	    };
+	};
 
+	/*Movie reducer and action generators*/
+	var nextMovieId = 1;
 	var moviesReducer = function moviesReducer() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 	    var action = arguments[1];
@@ -25930,6 +25949,19 @@
 	            return state;
 	    }
 	};
+	var ActionAddMovie = function ActionAddMovie(title, genre) {
+	    return {
+	        type: 'ADD_MOVIE',
+	        title: title,
+	        genre: genre
+	    };
+	};
+	var ActionRemoveMovie = function ActionRemoveMovie(id) {
+	    return {
+	        type: 'REMOVE_MOVIE',
+	        id: id
+	    };
+	};
 
 	var reducers = redux.combineReducers({
 	    name: nameReducer,
@@ -25941,27 +25973,16 @@
 	    return f;
 	}));
 
+	var dispatchId = 0;
 	store.subscribe(function () {
 	    dispatchId++;
 	    var state = store.getState();
 	    console.log('dispatch # ' + dispatchId, state);
 	});
 
-	store.dispatch({
-	    type: 'CHANGE_NAME',
-	    name: 'Anton'
-	});
-
-	store.dispatch({
-	    type: 'ADD_HOBBY',
-	    hobby: 'Sleep'
-	});
-
-	store.dispatch({
-	    type: 'ADD_MOVIE',
-	    title: 'Demolition man',
-	    genre: 'Action'
-	});
+	store.dispatch(ActionChangeName('Anton'));
+	store.dispatch(ActionAddHobby('Sleep'));
+	store.dispatch(ActionAddMovie('Demolition man', 'Action'));
 
 /***/ }),
 /* 236 */
