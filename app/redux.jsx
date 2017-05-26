@@ -1,5 +1,5 @@
 var redux = require('redux');
-
+var axios = require('axios');
 console.log('Starting redux example');
 
 /*Name reducer and action generators*/
@@ -82,10 +82,52 @@ var ActionRemoveMovie = (id) => {
     }
 }
 
+/*Map reducer and action generators*/
+var mapReducer = (state = {isFetching: false, url: undefined}, action) => {
+    switch (action.type){
+        case  'START_LOCATION_FETCH':
+            return {
+              isFetching:true,
+              url: undefined
+            };
+        case  'COMPLETE_LOCATION_FETCH':
+            return {
+                isFetching: false,
+                url: action.url
+            };
+        default:
+            return state;
+    }
+};
+var ActionStartLocationFetch = () => {
+    return {
+        type: 'START_LOCATION_FETCH'
+    }
+};
+var ActionCompleteLocationFetch = (url) => {
+    return {
+        type: 'COMPLETE_LOCATION_FETCH',
+        url
+    }
+};
+
+ var fetchLocation = () => {
+  store.dispatch(ActionStartLocationFetch());
+  axios.get('http://ipinfo.io').then(function (location) {
+        console.log('Here');
+        var loc = location.data.loc;
+        var baseUrl = 'https://www.google.com/maps/embed/v1/place?key=AIzaSyDw-tfjCEGG1Qu7BkGEA-vaophf3P35Swk&q=';
+        store.dispatch(ActionCompleteLocationFetch(baseUrl + loc));
+  }, function (error) {
+        console.log('Error: ', error);
+  });
+};
+
 var reducers = redux.combineReducers({
    name: nameReducer,
    hobbies: hobbiesReducer,
-   movies:  moviesReducer
+   movies:  moviesReducer,
+   map: mapReducer
 });
 
 var store = redux.createStore(reducers, redux.compose(
@@ -96,9 +138,16 @@ var dispatchId = 0;
 store.subscribe(() => {
     dispatchId++;
     var state = store.getState();
+    if(state.map.isFetching){
+        document.getElementById('app').innerHTML = 'Loading...'
+    }else if(state.map.url){
+        document.getElementById('app').innerHTML = `
+        <iframe width="1000" height="500" src="${state.map.url}"></iframe>`;
+    }
     console.log('dispatch # ' + dispatchId, state);
 });
 
+//fetchLocation();
 store.dispatch(ActionChangeName('Anton'));
 store.dispatch(ActionAddHobby('Sleep'));
 store.dispatch(ActionAddMovie('Demolition man', 'Action'));
