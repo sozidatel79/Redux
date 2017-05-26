@@ -50,13 +50,13 @@ var moviesReducer = (state = [], action) => {
     }
 };
 
-var reducer = redux.combineReducers({
+var reducers = redux.combineReducers({
    name: nameReducer,
    hobbies: hobbiesReducer,
    movies:  moviesReducer
 });
 
-var store = redux.createStore(reducer, redux.compose(
+var store = redux.createStore(reducers, redux.compose(
     window.devToolsExtension ? window.devToolsExtension() : f => f
 ));
 

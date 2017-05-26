@@ -25931,13 +25931,13 @@
 	    }
 	};
 
-	var reducer = redux.combineReducers({
+	var reducers = redux.combineReducers({
 	    name: nameReducer,
 	    hobbies: hobbiesReducer,
 	    movies: moviesReducer
 	});
 
-	var store = redux.createStore(reducer, redux.compose(window.devToolsExtension ? window.devToolsExtension() : function (f) {
+	var store = redux.createStore(reducers, redux.compose(window.devToolsExtension ? window.devToolsExtension() : function (f) {
 	    return f;
 	}));
 
