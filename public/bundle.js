@@ -25948,8 +25948,8 @@
 	});
 
 	store.dispatch({
-	    type: 'ADD_HOBBY',
-	    hobby: 'Running'
+	    type: 'CHANGE_NAME',
+	    name: 'Anton'
 	});
 
 	store.dispatch({
@@ -25961,22 +25961,6 @@
 	    type: 'ADD_MOVIE',
 	    title: 'Demolition man',
 	    genre: 'Action'
-	});
-
-	store.dispatch({
-	    type: 'ADD_MOVIE',
-	    title: 'Bones',
-	    genre: 'Serials'
-	});
-
-	store.dispatch({
-	    type: 'REMOVE_HOBBY',
-	    id: 2
-	});
-
-	store.dispatch({
-	    type: 'REMOVE_MOVIE',
-	    id: 2
 	});
 
 /***/ }),
